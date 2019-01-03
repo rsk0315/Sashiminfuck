@@ -249,7 +249,7 @@ $(function() {
 
     $('#src-body').val(code);
     $('#stdin, #src-body').prop('disabled', true);  // lock
-    $('#stdout').val('');
+    $('#stdout, #stderr').val('');
     stdin = unescape(encodeURIComponent($('#stdin').val()));  // UTF-8
     execute(code);
 });
