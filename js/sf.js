@@ -3,6 +3,8 @@
 const SOURCE_CHARS = /[\][><,.+-]/;  // ]...
 const TAMPOPO_MOD = 1 << 8;
 
+let debug = false;
+
 function makeJumpList(src) {
     // return map:
     //   index of '(' => index of corresponding ')' (vice versa);
@@ -44,13 +46,97 @@ function assert(whatShouldBeTrue) {
 }
 
 $(function() {
+    var tampopo = {};  // map[sashimi] => # of tampopos on it
+    var omaePos = 0;  // where omae is (are?)
+    const SASHIMI_LIST = [
+        'aji',
+        'buri',
+        'hamachi',
+        'ika',
+        'kanpachi',
+        'maguro_akami',
+        'maguro_chutoro',
+        'salmon',
+        'tai',
+        'tako',
+    ];
+    const SASHIMI_WIDTH = 128;  // px
+    const OMAE_WIDTH = 128;  // px
+    const TAMPOPO_Y = [
+        7, 8, 6, 9, 5, 10, 4, 11, 3, 12, 2, 13, 1, 14, 0, 15
+    ];
+
+    function createOmae() {
+        assert($('#omae').length == 0);
+
+        let $omae = $('<img id="omae">').attr({
+            src: 'img/cleanroom_jugyouin.png',
+        }).css({
+            position: 'absolute',
+            left: ($(window).width()-OMAE_WIDTH) / 2,
+            top: '24px',
+            width: OMAE_WIDTH,
+        });
+        $('#vis').html($omae);
+    }
+
+    function putSashimi(pos, leftpx) {
+        let sLength = SASHIMI_LIST.length;
+        let sI = (pos % sLength + sLength) % sLength;
+        let $sashimi = $('<img class="sashimi">').attr({
+            src: `img/sashimi_${SASHIMI_LIST[sI]}.png`,
+        }).css({
+            position: 'absolute',
+            left: `${leftpx}px`,
+            top: '160px',
+            width: SASHIMI_WIDTH,
+        });
+        $('#vis').append($sashimi);
+
+        let tmpp = tampopo[pos] || 0;
+        if (tmpp == 0) return;
+
+        for (var i = 0; i < tmpp; ++i) {
+            let $tampopo = $('<img class="tampopo">').attr({
+                src: `img/tampopo_single.png`,
+            }).css({
+                position: 'absolute',
+                left: `${leftpx+48}px`,
+                top: `${192-3*i}px`,
+                width: 24,
+            });
+            $('#vis').append($tampopo);
+        }
+    }
+
+    function reloadSashimi() {
+        $('.sashimi, .tampopo').remove();
+
+        let sWidth = SASHIMI_WIDTH
+        for (var i = 1; true; ++i) {
+            let leftpx = ($(window).width() - sWidth) / 2 + i * (sWidth*1.2);
+            if (!(leftpx < $(window).width())) break;
+            putSashimi(omaePos+i, leftpx);
+        }
+        for (var i = 0; true; --i) {
+            let leftpx = ($(window).width() - sWidth) / 2 + i * (sWidth*1.2);
+            if (!(leftpx + sWidth >= 0)) break;
+            putSashimi(omaePos+i, leftpx);
+        }
+    }
+
+    $(window).on('resize', function() {
+        $('#omae').css({
+            left: $(window).width()/2-64,
+        });
+        reloadSashimi(omaePos);
+    });
+
     function execute(src) {
         let jumpList = makeJumpList(src);
         let mapParen = jumpList['paren'];
         let mapNext = jumpList['next'];
 
-        var tampopo = {};  // map[sashimi] => # of tampopos on it
-        var omaePos = 0;  // where omae is (are?)
         var srcIdx = mapNext[-1];
 
         var tID = setInterval(function() {
@@ -86,11 +172,12 @@ $(function() {
 
             if (ch != ']') srcIdx = mapNext[srcIdx];
 
-            if ('debug') {
+            if (debug) {
                 console.log(`omaePos: ${omaePos}`);
                 console.log(`tampopo: ${tampopo[omaePos] || 0}`);
             }
 
+            reloadSashimi(omaePos);
             // あとはおえかきパートさえ実装すればおわりです．
         }, 500);
     }
@@ -98,9 +185,11 @@ $(function() {
     let param = $.url($(location).attr('search')).param();
     let code = param['code'];
 
+    createOmae();
+    reloadSashimi(omaePos);
+
     if (code === '') return;
 
     $('#src-body').val(code);
-    console.log(code);
     execute(code);
 });
