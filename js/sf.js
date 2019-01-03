@@ -90,6 +90,8 @@ $(function() {
                 console.log(`omaePos: ${omaePos}`);
                 console.log(`tampopo: ${tampopo[omaePos] || 0}`);
             }
+
+            // あとはおえかきパートさえ実装すればおわりです．
         }, 500);
     }
 
