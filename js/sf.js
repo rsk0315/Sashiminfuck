@@ -99,7 +99,7 @@ $(function() {
         }).css({
             position: 'absolute',
             left: ($(window).width()-OMAE_WIDTH) / 2,
-            top: '104px',
+            top: '144px',
             width: OMAE_WIDTH,
         });
         $('#vis').html($omae);
@@ -113,7 +113,7 @@ $(function() {
         }).css({
             position: 'absolute',
             left: `${leftpx}px`,
-            top: '240px',
+            top: '280px',
             width: SASHIMI_WIDTH,
         });
         $('#vis').append($sashimi);
@@ -122,7 +122,7 @@ $(function() {
         if (tmpp == 0) return;
 
         var ll = leftpx+48;
-        var tt = 272;
+        var tt = 312;
         while (tmpp >= 32) {
             let $tampopo = $('<img class="tampopo">').attr({
                 src: 'img/tampopo_single.png',
