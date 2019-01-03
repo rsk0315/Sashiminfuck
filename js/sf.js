@@ -115,13 +115,28 @@ $(function() {
         let tmpp = tampopo[pos] || 0;
         if (tmpp == 0) return;
 
-        for (var i = 0; i < tmpp; ++i) {
+        var ll = leftpx+48;
+        var tt = 192;
+        while (tmpp >= 32) {
             let $tampopo = $('<img class="tampopo">').attr({
-                src: `img/tampopo_single.png`,
+                src: 'img/tampopo_single.png',
             }).css({
                 position: 'absolute',
-                left: `${leftpx+48}px`,
-                top: `${192-3*i}px`,
+                left: `${ll-12}px`,
+                top: `${tt-12}px`,
+                width: 48,
+            });
+            $('#vis').append($tampopo);
+            tmpp -= 32;
+            tt -= 6;
+        }
+        for (var i = 0; i < tmpp; ++i) {
+            let $tampopo = $('<img class="tampopo">').attr({
+                src: 'img/tampopo_single.png',
+            }).css({
+                position: 'absolute',
+                left: `${ll}px`,
+                top: `${tt-3*(i%64)}px`,
                 width: 24,
             });
             $('#vis').append($tampopo);
