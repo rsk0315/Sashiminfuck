@@ -2,6 +2,19 @@
 
 const SOURCE_CHARS = /[\][><,.+-]/;  // ]...
 const TAMPOPO_MOD = 1 << 8;
+const SAMPLE_CODE = (
+    '++++++++[>+++++++++<-]>.'          // H
+        + '<++++[>+++++++<-]>+.'        // e
+        + '+++++++..+++.'               // llo
+        + '>++++[>+++++++++++<-]>.'     // ,
+        + '------------.'               // <Space>
+        + '<<+++++.'                    // t
+        + '<+++[>------<-]>-.'          // a
+        + '++++++++++++.'               // m
+        + '+++.-.+.-.'                  // popo
+        + '>>+.'                        // !
+        + '<++++++++++.'                // <Enter>
+);
 
 let debug = false;
 
@@ -51,6 +64,7 @@ $(function() {
     var stdin = '';
     var stdout = '';
     var inIdx = 0;
+    var steps = 0;
     var tID;
 
     const SASHIMI_LIST = [
@@ -142,6 +156,11 @@ $(function() {
         stop();
     });
 
+    $('#btn-sample').on('click', function(ev) {
+        ev.preventDefault();
+        $('#src-body').val(SAMPLE_CODE);
+    });
+
     $('#btn-reset').on('click', function(ev) {
         ev.preventDefault();
         location.href = './';
@@ -162,6 +181,8 @@ $(function() {
     function stop() {
         if (typeof tID !== 'undefined') clearInterval(tID);
         $('#stdin, #src-body').prop('disabled', false);
+        $('#stderr').val(`実行ステップ数: ${steps}`);
+        
     }
                 
     function execute(src) {
@@ -170,6 +191,7 @@ $(function() {
         let mapNext = jumpList['next'];
 
         var srcIdx = mapNext[-1];
+        steps = 0;
 
         tID = setInterval(function() {
             // console.log(srcIdx);
@@ -202,6 +224,7 @@ $(function() {
                 srcIdx = mapParen[srcIdx];
             }
 
+            ++steps;
             if (ch != ']') srcIdx = mapNext[srcIdx];
 
             if (debug) {
@@ -210,7 +233,7 @@ $(function() {
             }
 
             reloadSashimi(omaePos);
-        }, 500);
+        }, 250);
     }
 
     let param = $.url($(location).attr('search')).param();
@@ -220,7 +243,9 @@ $(function() {
     reloadSashimi(omaePos);
 
     console.log(code);
-    if (code === '' || typeof code === 'undefined') return;
+    if (code === '' || typeof code === 'undefined') {
+        return;
+    }
 
     $('#src-body').val(code);
     $('#stdin, #src-body').prop('disabled', true);  // lock
