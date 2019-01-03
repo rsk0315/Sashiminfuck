@@ -22,7 +22,9 @@ function makeJumpList(src) {
     // return map:
     //   index of '(' => index of corresponding ')' (vice versa);
     //   index of a source character => index of the next source character
-    const UNBALANCED_PARENTHESIS = '[[]][]]';
+    const UNBALANCED_PARENTHESIS = (
+        '括弧の対応が取れていない．お前は絶望的にタンポポ乗せる言語に向いてないから諦めて普通のプログラミング言語でもやってろ．'
+    );
     var paren = [];
     var mapParen = {};
     var mapNext = {};
@@ -33,7 +35,7 @@ function makeJumpList(src) {
             paren.push(i);
         } else if (ch == ']') {
             if (paren.length == 0) {
-                alert(UNBALANCED_PARENTHESIS);
+                $('#stderr').val(UNBALANCED_PARENTHESIS);
                 return null;
             }
             let open = paren.pop();
@@ -45,6 +47,10 @@ function makeJumpList(src) {
             last = i;
         }
     }
+    if (paren.length > 0) {
+        $('#stderr').val(UNBALANCED_PARENTHESIS);
+        return null;
+    }
     // for (var k of Object.keys(mapParen))
     //     console.log(`${k} => ${mapParen[k]}`);
     // for (var k of Object.keys(mapNext))
@@ -55,7 +61,7 @@ function makeJumpList(src) {
 
 function assert(whatShouldBeTrue) {
     if (whatShouldBeTrue) return;
-    alert('XXX');
+    $('#stderr').val('内部エラーの可能性があります．私は絶望的にプログラミングに向いてないので諦めて刺身にタンポポ乗せる仕事でもやります．');
 }
 
 $(function() {
@@ -93,7 +99,7 @@ $(function() {
         }).css({
             position: 'absolute',
             left: ($(window).width()-OMAE_WIDTH) / 2,
-            top: '24px',
+            top: '104px',
             width: OMAE_WIDTH,
         });
         $('#vis').html($omae);
@@ -107,7 +113,7 @@ $(function() {
         }).css({
             position: 'absolute',
             left: `${leftpx}px`,
-            top: '160px',
+            top: '240px',
             width: SASHIMI_WIDTH,
         });
         $('#vis').append($sashimi);
@@ -116,7 +122,7 @@ $(function() {
         if (tmpp == 0) return;
 
         var ll = leftpx+48;
-        var tt = 192;
+        var tt = 272;
         while (tmpp >= 32) {
             let $tampopo = $('<img class="tampopo">').attr({
                 src: 'img/tampopo_single.png',
@@ -196,12 +202,15 @@ $(function() {
     function stop() {
         if (typeof tID !== 'undefined') clearInterval(tID);
         $('#stdin, #src-body').prop('disabled', false);
-        $('#stderr').val(`実行ステップ数: ${steps}`);
-        
+        if (steps) $('#stderr').val(`実行ステップ数: ${steps}`);        
     }
                 
     function execute(src) {
         let jumpList = makeJumpList(src);
+        if (jumpList === null) {
+            stop();
+            return;
+        }
         let mapParen = jumpList['paren'];
         let mapNext = jumpList['next'];
 
