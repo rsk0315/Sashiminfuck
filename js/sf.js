@@ -266,7 +266,7 @@ $(function() {
     createOmae();
     reloadSashimi(omaePos);
 
-    console.log(code);
+    // console.log(code);
     if (code === '' || typeof code === 'undefined') {
         return;
     }
