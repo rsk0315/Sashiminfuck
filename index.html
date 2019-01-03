@@ -19,10 +19,20 @@
           overflow-x: hidden;
           width: 100%;
       }
+      code {
+          padding: 3px 3px 1px;
+          margin: 0;
+          border-width: 0;
+          color: #d72b3f;
+          background-color: #f7f7f9;
+          border: 1px solid #e1e1e8;
+      }
     </style>
   </head>
 
   <body>
+    <h2>お前は絶望的にプログラミングに向いてないから諦めて刺身にタンポポ乗せる言語でもやってろ．</h2>
+
     <!-- Visualizer -->
     <div id="vis" style="height: 320px">
     </div>
@@ -78,6 +88,64 @@
       </div>
     </form>
 
+    <hr>
+    <!-- Description -->
+    <div>
+      <h3>命令一覧</h3>
+      <ul>
+        <li><code>+</code>
+          <ul>
+            <li>お前の目の前にある刺身にタンポポを一つ乗せます．</li>
+            <li>32 個の小さいタンポポは大きなタンポポと取り替えます．</li>
+            <li>小さいタンポポ 256 個ぶんになるとタンポポをすべて取り除きます．</li>
+          </ul>
+        </li>
+        <li><code>-</code>
+          <ul>
+            <li>お前の目の前にある刺身からタンポポを一つ取り除きます．</li>
+            <li>タンポポがないときは，小さいタンポポ 255 個ぶんを乗せます．</li>
+          </ul>
+        </li>
+        <li><code>&lt;</code>
+          <ul>
+            <li>お前が（刺身から見て）右に移動します．</li>
+          </ul>
+        </li>
+        <li><code>&gt;</code>
+          <ul>
+            <li>お前が（刺身から見て）左に移動します．</li>
+          </ul>
+        </li>
+        <li><code>[</code>
+          <ul>
+            <li>お前の目の前にタンポポがなければ対応する <code>]</code> にジャンプします．</li>
+            <li>そうでなければ何もしません．</li>
+          </ul>
+        </li>
+        <li><code>]</code>
+          <ul>
+            <li>対応する <code>[</code> にジャンプします．</li>
+          </ul>
+        </li>
+        <li><code>,</code>
+          <ul>
+            <li>お前が標準入力から一文字読みます．</li>
+            <li>目の前の刺身に乗っているタンポポの個数がその文字コードの値と等しくなるようにします．</li>
+          </ul>
+        </li>
+        <li><code>.</code>
+          <ul>
+            <li>お前が目の前にあるタンポポの個数を数えます．</li>
+            <li>文字コードの値がその個数と等しい文字を標準出力に書き出します．</li>
+          </ul>
+        </li>
+        <li>その他の文字
+          <ul>
+            <li>コメントとして扱われます．</li>
+            <li>英語でコメントを書く場合は <code>-</code> <code>,</code> <code>.</code> に気をつけてください．</li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </body>
 </html>
