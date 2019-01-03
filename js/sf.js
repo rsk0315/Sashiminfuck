@@ -48,6 +48,11 @@ function assert(whatShouldBeTrue) {
 $(function() {
     var tampopo = {};  // map[sashimi] => # of tampopos on it
     var omaePos = 0;  // where omae is (are?)
+    var stdin = '';
+    var stdout = '';
+    var inIdx = 0;
+    var tID;
+
     const SASHIMI_LIST = [
         'aji',
         'buri',
@@ -132,6 +137,33 @@ $(function() {
         reloadSashimi(omaePos);
     });
 
+    $('#btn-stop').on('click', function(ev) {
+        ev.preventDefault();
+        stop();
+    });
+
+    $('#btn-reset').on('click', function(ev) {
+        ev.preventDefault();
+        location.href = './';
+    });
+
+    function input() {
+        let ch = stdin.charCodeAt(inIdx++);
+        if (isNaN(ch)) ch = -1;  // EOF
+        tampopo[omaePos] = ch;
+    }
+
+    function output() {
+        let ch = String.fromCharCode(tampopo[omaePos] || 0);
+        stdout += ch;
+        $('#stdout').val(stdout);
+    }
+
+    function stop() {
+        if (typeof tID !== 'undefined') clearInterval(tID);
+        $('#stdin, #src-body').prop('disabled', false);
+    }
+                
     function execute(src) {
         let jumpList = makeJumpList(src);
         let mapParen = jumpList['paren'];
@@ -139,10 +171,10 @@ $(function() {
 
         var srcIdx = mapNext[-1];
 
-        var tID = setInterval(function() {
+        tID = setInterval(function() {
             // console.log(srcIdx);
             if (typeof srcIdx === 'undefined') {
-                clearInterval(tID);
+                stop();
                 return;
             }
 
@@ -178,7 +210,6 @@ $(function() {
             }
 
             reloadSashimi(omaePos);
-            // あとはおえかきパートさえ実装すればおわりです．
         }, 500);
     }
 
@@ -188,8 +219,12 @@ $(function() {
     createOmae();
     reloadSashimi(omaePos);
 
-    if (code === '') return;
+    console.log(code);
+    if (code === '' || typeof code === 'undefined') return;
 
     $('#src-body').val(code);
+    $('#stdin, #src-body').prop('disabled', true);  // lock
+    $('#stdout').val('');
+    stdin = unescape(encodeURIComponent($('#stdin').val()));  // UTF-8
     execute(code);
 });
