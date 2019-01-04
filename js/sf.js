@@ -294,6 +294,7 @@ $(function() {
     }
 
     $('#src-body').val(code);
+    $('#stdin').val(param.stdin);
     $('#stdin').prop('disabled', true);  // lock
     $('#src-body').addClass('hidden');
     $('#highlit').removeClass('hidden').text(code);
