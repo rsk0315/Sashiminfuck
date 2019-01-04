@@ -32,121 +32,123 @@
   </head>
 
   <body>
-    <h2>お前は絶望的にプログラミングに向いてないから諦めて刺身にタンポポ乗せる言語でもやってろ．</h2>
+    <main class="container-fluid">
+      <h2>お前は絶望的にプログラミングに向いてないから諦めて刺身にタンポポ乗せる言語でもやってろ．</h2>
 
-    <!-- Visualizer -->
-    <div id="vis" style="height: 320px">
-    </div>
-
-    <hr>
-    <!-- Source Code -->
-    <form class="form-horizontal" style="width: 90%; margin: 0 auto;">
-      <div class="form-group">
-        <label class="control-label col-sm-3" for="src">ソースコード</label>
-        <div class="col-sm-6" id="src">
-          <textarea class="form-control" id="src-body" name="code" style="font-family: monospace"></textarea>
-        </div>
+      <!-- Visualizer -->
+      <div id="vis" style="height: 320px">
       </div>
 
-      <div class="form-group">
-        <label class="control-label col-sm-3" for="src">標準入力</label>
-        <div class="col-sm-6" id="src">
-          <textarea class="form-control" id="stdin" name="stdin" style="font-family: monospace"></textarea>
+      <hr>
+      <!-- Source Code -->
+      <form class="form-horizontal" style="width: 90%; margin: 0 auto;">
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="src">ソースコード</label>
+          <div class="col-sm-6" id="src">
+            <textarea class="form-control" id="src-body" name="code" style="font-family: monospace"></textarea>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="control-label col-sm-3" for="stdout">標準出力</label>
-        <div class="col-sm-6">
-          <textarea class="form-control" id="stdout" style="font-family: monospace" disabled></textarea>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="src">標準入力</label>
+          <div class="col-sm-6" id="src">
+            <textarea class="form-control" id="stdin" name="stdin" style="font-family: monospace"></textarea>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="control-label col-sm-3" for="stderr">標準エラー出力</label>
-        <div class="col-sm-6">
-          <textarea class="form-control" id="stderr" style="font-family: monospace" disabled></textarea>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="stdout">標準出力</label>
+          <div class="col-sm-6">
+            <textarea class="form-control" id="stdout" style="font-family: monospace" disabled></textarea>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="control-label col-sm-3" for="btn-1"></label>
-        <div class="col-xs-1" id="btn-1">
-          <button class="btn btn-primary" id="btn-exec">実行</button>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="stderr">標準エラー出力</label>
+          <div class="col-sm-6">
+            <textarea class="form-control" id="stderr" style="font-family: monospace" disabled></textarea>
+          </div>
         </div>
-        <div class="col-xs-1"></div>
-        <div class="col-xs-1">
-          <button class="btn btn-default" id="btn-stop">停止</button>
-        </div>
-        <div class="col-xs-2"></div>
-        <div class="col-xs-1">
-          <button class="btn btn-default" id="btn-sample">サンプル</button>
-        </div>
-        <div class="col-xs-2"></div>
-        <div class="col-xs-1">
-          <button class="btn btn-default" id="btn-reset">リセット</button>
-        </div>
-      </div>
-    </form>
 
-    <hr>
-    <!-- Description -->
-    <div>
-      <h3>命令一覧</h3>
-      <ul>
-        <li><code>+</code>
-          <ul>
-            <li>お前の目の前にある刺身にタンポポを一つ乗せます．</li>
-            <li>32 個の小さいタンポポは大きなタンポポと取り替えます．</li>
-            <li>小さいタンポポ 256 個ぶんになるとタンポポをすべて取り除きます．</li>
-          </ul>
-        </li>
-        <li><code>-</code>
-          <ul>
-            <li>お前の目の前にある刺身からタンポポを一つ取り除きます．</li>
-            <li>タンポポがないときは，小さいタンポポ 255 個ぶんを乗せます．</li>
-          </ul>
-        </li>
-        <li><code>&lt;</code>
-          <ul>
-            <li>お前が（刺身から見て）右に移動します．</li>
-          </ul>
-        </li>
-        <li><code>&gt;</code>
-          <ul>
-            <li>お前が（刺身から見て）左に移動します．</li>
-          </ul>
-        </li>
-        <li><code>[</code>
-          <ul>
-            <li>お前の目の前にタンポポがなければ対応する <code>]</code> にジャンプします．</li>
-            <li>そうでなければ何もしません．</li>
-          </ul>
-        </li>
-        <li><code>]</code>
-          <ul>
-            <li>対応する <code>[</code> にジャンプします．</li>
-          </ul>
-        </li>
-        <li><code>,</code>
-          <ul>
-            <li>お前が標準入力から一文字読みます．</li>
-            <li>目の前の刺身に乗っているタンポポの個数がその文字コードの値と等しくなるようにします．</li>
-          </ul>
-        </li>
-        <li><code>.</code>
-          <ul>
-            <li>お前が目の前にあるタンポポの個数を数えます．</li>
-            <li>文字コードの値がその個数と等しい文字を標準出力に書き出します．</li>
-          </ul>
-        </li>
-        <li>その他の文字
-          <ul>
-            <li>コメントとして扱われます．</li>
-            <li>英語でコメントを書く場合は <code>-</code> <code>,</code> <code>.</code> に気をつけてください．</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="btn-1"></label>
+          <div class="col-xs-1" id="btn-1">
+            <button class="btn btn-primary" id="btn-exec">実行</button>
+          </div>
+          <div class="col-xs-1"></div>
+          <div class="col-xs-1">
+            <button class="btn btn-default" id="btn-stop">停止</button>
+          </div>
+          <div class="col-xs-2"></div>
+          <div class="col-xs-1">
+            <button class="btn btn-default" id="btn-sample">サンプル</button>
+          </div>
+          <div class="col-xs-2"></div>
+          <div class="col-xs-1">
+            <button class="btn btn-default" id="btn-reset">リセット</button>
+          </div>
+        </div>
+      </form>
+
+      <hr>
+      <!-- Description -->
+      <div>
+        <h3>命令一覧</h3>
+        <ul>
+          <li><code>+</code>
+            <ul>
+              <li>お前の目の前にある刺身にタンポポを一つ乗せます．</li>
+              <li>32 個の小さいタンポポは大きなタンポポと取り替えます．</li>
+              <li>小さいタンポポ 256 個ぶんになるとタンポポをすべて取り除きます．</li>
+            </ul>
+          </li>
+          <li><code>-</code>
+            <ul>
+              <li>お前の目の前にある刺身からタンポポを一つ取り除きます．</li>
+              <li>タンポポがないときは，小さいタンポポ 255 個ぶんを乗せます．</li>
+            </ul>
+          </li>
+          <li><code>&lt;</code>
+            <ul>
+              <li>お前が（刺身から見て）右に移動します．</li>
+            </ul>
+          </li>
+          <li><code>&gt;</code>
+            <ul>
+              <li>お前が（刺身から見て）左に移動します．</li>
+            </ul>
+          </li>
+          <li><code>[</code>
+            <ul>
+              <li>お前の目の前にタンポポがなければ対応する <code>]</code> にジャンプします．</li>
+              <li>そうでなければ何もしません．</li>
+            </ul>
+          </li>
+          <li><code>]</code>
+            <ul>
+              <li>対応する <code>[</code> にジャンプします．</li>
+            </ul>
+          </li>
+          <li><code>,</code>
+            <ul>
+              <li>お前が標準入力から一文字読みます．</li>
+              <li>目の前の刺身に乗っているタンポポの個数がその文字コードの値と等しくなるようにします．</li>
+            </ul>
+          </li>
+          <li><code>.</code>
+            <ul>
+              <li>お前が目の前にあるタンポポの個数を数えます．</li>
+              <li>文字コードの値がその個数と等しい文字を標準出力に書き出します．</li>
+            </ul>
+          </li>
+          <li>その他の文字
+            <ul>
+              <li>コメントとして扱われます．</li>
+              <li>英語でコメントを書く場合は <code>-</code> <code>,</code> <code>.</code> に気をつけてください．</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </main>
   </body>
 </html>
