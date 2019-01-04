@@ -18,6 +18,21 @@ const SAMPLE_CODE = (
 
 let debug = false;
 
+function assert(whatShouldBeTrue) {
+    if (whatShouldBeTrue) return;
+    $('#stderr').val('内部エラーの可能性があります．私は絶望的にプログラミングに向いてないので諦めて刺身にタンポポ乗せる仕事でもやります．');
+}
+
+function e(s) {
+    assert(typeof s === 'string');
+    return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function makeJumpList(src) {
     // return map:
     //   index of '(' => index of corresponding ')' (vice versa);
@@ -57,11 +72,6 @@ function makeJumpList(src) {
     //     console.log(`${k} => ${mapNext[k]}`);
 
     return {paren: mapParen, next: mapNext};
-}
-
-function assert(whatShouldBeTrue) {
-    if (whatShouldBeTrue) return;
-    $('#stderr').val('内部エラーの可能性があります．私は絶望的にプログラミングに向いてないので諦めて刺身にタンポポ乗せる仕事でもやります．');
 }
 
 $(function() {
@@ -201,8 +211,19 @@ $(function() {
 
     function stop() {
         if (typeof tID !== 'undefined') clearInterval(tID);
-        $('#stdin, #src-body').prop('disabled', false);
+        $('#stdin').prop('disabled', false);
+        $('#src-body').removeClass('hidden');
+        $('#highlit').addClass('hidden');
         if (steps) $('#stderr').val(`実行ステップ数: ${steps}`);        
+    }
+
+    function highlight(src, index) {
+        let former = src.slice(0, index);
+        let highlit = src[index];
+        let latter = src.slice(index+1);
+        assert(typeof highlit !== 'undefined');
+
+        $('#highlit').html(`${e(former)}<span class="running">${e(highlit)}</span>${e(latter)}`);
     }
                 
     function execute(src) {
@@ -226,6 +247,7 @@ $(function() {
 
             let ch = src[srcIdx];
             assert(ch.match(SOURCE_CHARS));
+            highlight(src, srcIdx);
 
             var tmpp = tampopo[omaePos] || 0;
             if (ch == '+') {
@@ -272,7 +294,9 @@ $(function() {
     }
 
     $('#src-body').val(code);
-    $('#stdin, #src-body').prop('disabled', true);  // lock
+    $('#stdin').prop('disabled', true);  // lock
+    $('#src-body').addClass('hidden');
+    $('#highlit').removeClass('hidden').text(code);
     $('#stdout, #stderr').val('');
     stdin = unescape(encodeURIComponent($('#stdin').val()));  // UTF-8
     execute(code);

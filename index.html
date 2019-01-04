@@ -28,6 +28,13 @@
           background-color: #f7f7f9;
           border: 1px solid #e1e1e8;
       }
+      #highlit {
+          font-family: monospace;
+          height: auto;
+      }
+      #highlit .running {
+          color: #f66a6a;
+      }
     </style>
   </head>
 
@@ -44,6 +51,7 @@
       <div class="form-group">
         <label class="control-label col-sm-3" for="src">ソースコード</label>
         <div class="col-sm-6" id="src">
+          <div class="form-control hidden" id="highlit"></div>
           <textarea class="form-control" id="src-body" name="code" style="font-family: monospace"></textarea>
         </div>
       </div>
