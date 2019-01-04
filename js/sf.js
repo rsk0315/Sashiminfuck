@@ -97,9 +97,6 @@ $(function() {
     ];
     const SASHIMI_WIDTH = 128;  // px
     const OMAE_WIDTH = 128;  // px
-    const TAMPOPO_Y = [
-        7, 8, 6, 9, 5, 10, 4, 11, 3, 12, 2, 13, 1, 14, 0, 15
-    ];
 
     function createOmae() {
         assert($('#omae').length == 0);
